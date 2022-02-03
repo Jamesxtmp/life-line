@@ -1,18 +1,18 @@
 <template>
   <div class="main-wrap">
     <Barlocation/>
-    <ScrollinDays/>
+    <ScrollingDays/>
   </div>
 </template>
 
 <script>
 import Barlocation from "../components/Barlocation"
-import ScrollinDays from "../components/ScrollinDays"
+import ScrollingDays from "../components/ScrollingDays"
 
 export default {
   components: {
     Barlocation,
-    ScrollinDays,
+    ScrollingDays,
   }
 }
 </script>

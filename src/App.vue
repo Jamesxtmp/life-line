@@ -24,7 +24,7 @@ export default {
   --color-a: rgb(53, 53, 53);
   --color-b: rgb(95, 27, 151); 
   --color-b-a: rgb(95, 27, 151, 0.5); 
-  --color-c: rgb(0, 0, 0);
+  --color-c: rgb(118, 49, 175); 
   --color-d: rgb(0, 0, 0);
   --color-e: rgb(0, 0, 0);
 }

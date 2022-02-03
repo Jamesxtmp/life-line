@@ -1,18 +1,47 @@
 <template>
-    <div class="options-plus">
-        <span class="futuro">Futuro</span>
-        <span class="hoy">Hoy</span>
-        <span class="pasado">Pasado</span>
-    </div>
+    <template v-if="showOptions">
+        <div 
+            class="options-plus"
+            v-if="location == 'days'"
+        >
+            <span class="tarea">Tarea</span>
+            <span class="hoy">Hoy</span>
+            <span class="pasado">Pasado</span>
+        </div>
+        <div 
+            class="options-plus"
+            v-if="location == 'ideas'"
+        >
+            <span class="nota">Nota</span>
+            <span class="meta">Meta</span>
+        </div>
+    </template>
 
-    <button>
-        <i class="las la-plus"></i>
+    <button
+        @click="toggleShowOptions()"
+    >
+        <i v-if="!showOptions" class="las la-plus"></i>
+        <i v-if="showOptions" class="las la-angle-down"></i>
     </button>
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
+    props: {
+        location: {
+            require: true
+        }
+    },
+    setup(props){
+        const showOptions = ref(false)
 
+        return{
+            showOptions,
+
+            toggleShowOptions: () => { showOptions.value = !showOptions.value}
+        }
+    }
 }
 </script>
 
@@ -46,7 +75,7 @@ button i{
     margin: 4px 0;
     color: white;
 }
-.hoy{
+.hoy, .nota{
     font-size: 20px;
 }
 </style>

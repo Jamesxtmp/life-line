@@ -5,19 +5,31 @@
             v-for="(day, i) in 40"
             :key="i"
         >
-        <h2> {{ 'Titulo de la etiqueta' }} </h2>
+        <h2> {{ 'Titulo Dias' }} </h2>
         </div>
-            <AddButton/>
+            <AddButton location="days" />
+            <TabsDays @getTabPosition="filterByTab()" />
     </div>
 </template>
 
 <script>
 import AddButton from "../components/AddButton"
+import TabsDays from "../components/TabsDays"
 
 export default {
     components: {
         AddButton,
+        TabsDays,
     },
+    setup(){
+        
+        const filterByTab = () => {
+            
+        }
+        return{
+
+        }
+    }
 }
 </script>
 
