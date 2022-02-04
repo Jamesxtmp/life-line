@@ -2,19 +2,19 @@
     <div class="scroll-wrap">
         <div 
             class="wrap-notes"
-            v-for="(day, i) in 40"
+            v-for="(note, i) in notes"
             :key="i"
-            :class="{ hidden : !isPositionNote}"
+            :class="{ hidden : tabPosition == 'flag'}"
         >
-        <h2> {{ 'Titulo Ideas notes' }} </h2>
+        <h2> {{ note.title }} </h2>
         </div>
         <div 
             class="wrap-goals"
-            v-for="(day, i) in 40"
+            v-for="(goal, i) in goales"
             :key="i"
-            :class="{ hidden : isPositionNote}"
+            :class="{ hidden : tabPosition == 'note'}"
         >
-        <h2> {{ 'Titulo Ideas goals' }} </h2>
+        <h2> {{ goal.title }} </h2>
         </div>
         <AddButton location="ideas" />
         <TabsIdeas @getTabPosition="tabPositioning" />
@@ -22,9 +22,13 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, reactive } from 'vue'
 import AddButton from "../components/AddButton"
 import TabsIdeas from "../components/TabsIdeas"
+
+    //* Firebase Importations
+import fireApp from "@/api/firebaseApi";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export default {
     components: {
@@ -32,19 +36,38 @@ export default {
         TabsIdeas,
     },
     setup(){
-        const isPositionNote = ref(true)
+        
+        const data = reactive({
+            tabPosition: 'note',
+            goales: null,
+            notes: null
+        })
+
+        const fireDb = getDatabase(fireApp)
+        const goalesUserRef = ref(fireDb, 'users/jaime/entries/goales')
+        const tasksUserRef = ref(fireDb, 'users/jaime/entries/tasks')
+        onValue(goalesUserRef, snapshot => {
+            data.goales = snapshot.val()
+            // console.log(snapshot.val())
+        })
+        onValue(tasksUserRef, snapshot => {
+            data.notes = snapshot.val()
+            // console.log(snapshot.val())
+        })
 
         const tabPositioning = ( position ) => {
-            console.log( position )
             if ( position == 'note' ) {
-                isPositionNote.value = true
-            }else{
-                isPositionNote.value = false
+                data.tabPosition = 'note'
             }
-
+            if ( position == 'flag' ) {
+                data.tabPosition = 'flag'
+            }
         }   
         return{
-            isPositionNote,
+            tabPosition: computed( () => data.tabPosition ),
+            goales: computed( () => data.goales ),
+            notes: computed( () => data.notes ),
+
 
             tabPositioning
         }

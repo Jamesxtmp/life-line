@@ -1,11 +1,12 @@
 <template>
     <div class="scroll-wrap">
         <div 
+            v-show="dataDays"
             class="wrap-day"
-            v-for="(day, i) in 40"
+            v-for="(day, i) in dataDays"
             :key="i"
         >
-        <h2> {{ 'Titulo Dias' }} </h2>
+        <h2> {{ dataDays[i].title}} </h2>
         </div>
             <AddButton location="days" />
             <TabsDays @getTabPosition="filterByTab()" />
@@ -15,6 +16,11 @@
 <script>
 import AddButton from "../components/AddButton"
 import TabsDays from "../components/TabsDays"
+import { reactive, computed } from "vue"
+
+    //* Firebase Importations
+import fireApp from "@/api/firebaseApi"
+import { getDatabase, ref, onValue } from "firebase/database"
 
 export default {
     components: {
@@ -23,11 +29,24 @@ export default {
     },
     setup(){
         
-        const filterByTab = () => {
-            
-        }
-        return{
+        const data = reactive({
+            dataDays: null
+        })
 
+        const fireDB = getDatabase(fireApp)
+        const daysUserRef = ref(fireDB, 'users/jaime/entries/days')
+        onValue(daysUserRef, snapshot => {
+            data.dataDays = snapshot.val()
+        })
+
+        const filterByTab = () => {
+
+        }
+
+        return{
+            dataDays: computed( () => data.dataDays ),
+
+            filterByTab,
         }
     }
 }

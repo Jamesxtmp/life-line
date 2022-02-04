@@ -2,21 +2,21 @@
   <div class="wrap-tabs">
     <button
         class="note"
-        :class="{ focusClass: focusnote }"
+        :class="{ focusClass: focusActully == 'note' }"
     >
         <i
             class="las la-sticky-note"
-            @click="emitPosition('note'); setFocus()"
+            @click="emitPosition('note'); setFocus('note')"
         >
         </i>
     </button>
     <button
         class="flag"
-        :class="{ focusClass: !focusnote }"
+        :class="{ focusClass: focusActully == 'flag' }"
     >
         <i
             class="lab la-font-awesome-flag"
-            @click="emitPosition('flag'); setFocus()"
+            @click="emitPosition('flag'); setFocus('flag')"
         >
         </i>
     </button>
@@ -29,17 +29,17 @@ import { ref } from 'vue'
 export default {
     setup(props, context){
 
-        const focusnote = ref(true)
+        const focusActully= ref('note')
 
         const emitPosition = ( position ) => {
             context.emit('getTabPosition', position)
         }
-        const setFocus = () => {
-            focusnote.value = !focusnote.value
-        }
+        const setFocus = ( position ) => {
+            focusActully.value = position
+        }  
 
         return{
-            focusnote,
+            focusActully,
 
             emitPosition,
             setFocus,
